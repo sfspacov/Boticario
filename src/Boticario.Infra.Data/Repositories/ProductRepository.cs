@@ -36,6 +36,15 @@ namespace Boticario.Infra.Data.Repositories
 
         public Product Create(Product product)
         {
+            if (!memoryDatabase.Any())
+            {
+                product.Sku = 1;
+            }
+            else
+            {
+                product.Sku = memoryDatabase.Max(x => x.Sku) + 1;
+            }
+
             memoryDatabase.Add(product);
             product = memoryDatabase.FirstOrDefault(x => x.Sku == product.Sku);
 
